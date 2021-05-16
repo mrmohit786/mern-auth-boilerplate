@@ -58,11 +58,11 @@ exports.registerController = async (req, res) => {
     const request = await mailService(mailOptions);
     if (request) {
       console.log(request);
-      return res.json({
+      return res.status(200).json({
         message: `Email has been sent to ${email}`,
       });
     } else {
-      return res.json({
+      return res.status(500).json({
         message: `Internal server error`,
       });
     }
@@ -71,6 +71,52 @@ exports.registerController = async (req, res) => {
     return res.status(400).json({
       success: false,
       errors: errorHandler(error),
+    });
+  }
+};
+
+// Account activation
+exports.activationController = (req, res) => {
+  const { token } = req.body;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+      if (err) {
+        console.log('Activation error');
+        return res.status(401).json({
+          success: false,
+          errors: 'Expired link. Signup again',
+        });
+      } else {
+        const { name, email, password } = jwt.decode(token);
+
+        const user = new User({
+          name,
+          email,
+          password,
+        });
+
+        user.save((err, user) => {
+          if (err) {
+            console.log('Save error', errorHandler(err));
+            return res.status(401).json({
+              errors: errorHandler(err),
+            });
+          } else {
+            return res.status(201).json({
+              success: true,
+              data: user,
+              message: 'Signup success',
+            });
+          }
+        });
+      }
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong, please try again',
+      errors: 'token not found',
     });
   }
 };

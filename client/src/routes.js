@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from 'screens/Home';
 import Register from 'screens/Register';
 import ErrorBoundary from 'components/ErrorBoundary';
+import Activation from 'screens/Activation';
 
 const routes = () => {
   return (
@@ -15,6 +16,11 @@ const routes = () => {
               path='/register'
               exact
               render={props => <Register {...props} />}
+            />
+            <Route
+              path='/users/activate/:token'
+              exact
+              render={props => <Activation {...props} />}
             />
           </Switch>
         </ErrorBoundary>

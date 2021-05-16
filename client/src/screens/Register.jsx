@@ -19,7 +19,7 @@ const Register = () => {
         password: formData.password,
       },
     }).catch(error => {
-      toast.error(error.response.data.error);
+      toast.error(error.data.errors);
     });
 
     if (res) {
