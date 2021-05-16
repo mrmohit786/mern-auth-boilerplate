@@ -15,15 +15,9 @@ const PORT = process.env.PORT;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(cors());
 // Config for development
 if (process.env.PORT_ENV === 'development') {
-  // enable cors for localhost:3000
-  app.use(
-    cors({
-      origin: process.env.CLIENT_URL,
-    })
-  );
   // morgan give information about api request
   app.use(morgan('dev'));
 }

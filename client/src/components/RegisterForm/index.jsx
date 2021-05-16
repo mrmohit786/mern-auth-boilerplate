@@ -10,22 +10,19 @@ const initialValues = {
   confirmPassword: '',
 };
 
-const RegisterForm = submit => {
+const RegisterForm = ({ submit }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={registerFormSchema}
-      onSubmit={values => {
-        console.log(values);
-        submit(values);
-      }}
+      onSubmit={submit}
     >
       {formik => {
-        const { errors, touched, isValid, dirty } = formik;
+        const { errors, touched } = formik;
         return (
-          <div className='container'>
-            <h1>Registration</h1>
+          <div className='register-container'>
             <Form>
+              <h1>REGISTER</h1>
               <div className='form-row'>
                 <label htmlFor='email'>Name</label>
                 <Field
@@ -83,14 +80,7 @@ const RegisterForm = submit => {
                   className='error'
                 />
               </div>
-
-              <button
-                type='submit'
-                className='magnifyBorder'
-                // className={!(dirty && isValid) ? 'disabled-btn' : ''}
-              >
-                Register
-              </button>
+              <button type='submit'>Register</button>
             </Form>
           </div>
         );

@@ -1,20 +1,14 @@
-$primary-color: #1d3557;
-$error-color: #e63946;
-$text-color: #293241;
+$primary-color: blue;
+$error-color: red;
+$text-color: black;
 $color-white: #fff;
-$shadow-color: #dedee6;
+$shadow-color: darkblue;
 $border-radius: 4px;
 
-.container {
-  margin-top: 5rem;
-  min-width: 600px;
+.register-container {
+  max-width: 600px;
   padding: 3rem 4rem;
-  border-radius: $border-radius;
-  background: $color-white;
-  box-shadow: 10px 10px 20px rgba($shadow-color, 0.4),
-    -10px -10px 20px rgba($shadow-color, 0.8),
-    -8px 8px 30px rgba($shadow-color, 1);
-
+  margin: auto;
   h1 {
     font-size: 2rem;
     color: $text-color;
