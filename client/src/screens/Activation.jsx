@@ -6,7 +6,7 @@ import request from 'utils/request';
 import jwt from 'jsonwebtoken';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Activation = ({ match }) => {
+const Activation = ({ match, history }) => {
   const [formData, setFormData] = useState({
     name: '',
     token: '',
@@ -15,12 +15,12 @@ const Activation = ({ match }) => {
 
   useEffect(() => {
     let token = match.params.token;
-    let { name } = jwt.decode(token);
+    let tokenData = jwt.decode(token);
 
-    if (token) {
+    if (token && tokenData && tokenData.name) {
       setFormData({
         ...formData,
-        name,
+        name: tokenData.name,
         token,
       });
     }
@@ -29,7 +29,7 @@ const Activation = ({ match }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params]);
 
-  const { name, token, show } = formData;
+  const { name, token } = formData;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -37,8 +37,8 @@ const Activation = ({ match }) => {
       url: `/activation`,
       method: 'POST',
       data: { token },
-    }).catch(error => {
-      toast.error(error.data.errors);
+    }).catch(err => {
+      toast.error(err.data.error);
     });
 
     if (res) {
@@ -48,14 +48,16 @@ const Activation = ({ match }) => {
   };
 
   return (
-    <div className='container'>
+    <div>
       <ToastContainer />
       {isAuth() ? <Redirect to='/' /> : null}
       <div>
-        <h1>Welcome {name}</h1>
+        <h1>Welcome {name} to React-app</h1>
         <form onSubmit={handleSubmit}>
           <button type='submit'>Activate your account</button>
         </form>
+        <p>Or sign up again</p>
+        <button onClick={() => history.push('/')}>Sign Up</button>
       </div>
     </div>
   );

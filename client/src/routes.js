@@ -4,6 +4,7 @@ import Home from 'screens/Home';
 import Register from 'screens/Register';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Activation from 'screens/Activation';
+import Login from 'screens/Login';
 
 const routes = () => {
   return (
@@ -16,6 +17,11 @@ const routes = () => {
               path='/register'
               exact
               render={props => <Register {...props} />}
+            />
+              <Route
+              path='/login'
+              exact
+              render={props => <Login {...props} />}
             />
             <Route
               path='/users/activate/:token'

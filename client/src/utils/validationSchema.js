@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 
-// registration form validation schema for formik
 export const registerFormSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
@@ -19,4 +18,12 @@ export const registerFormSchema = Yup.object().shape({
       is: val => (val && val.length > 0 ? true : false),
       then: Yup.string().oneOf([Yup.ref('password')], 'Password not match'),
     }),
+});
+
+export const loginFormSchema = Yup.object().shape({
+  email: Yup.string().email().required('Email is required'),
+
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password is too short - should be 6 chars minimum'),
 });

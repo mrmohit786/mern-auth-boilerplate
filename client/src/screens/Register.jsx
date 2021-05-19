@@ -6,7 +6,7 @@ import RegisterForm from 'components/RegisterForm';
 import request from 'utils/request';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Register = () => {
+const Register = ({ history }) => {
   const handleSubmit = async formData => {
     console.log(formData);
 
@@ -18,8 +18,8 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
       },
-    }).catch(error => {
-      toast.error(error.data.errors);
+    }).catch(err => {
+      toast.error(err.data.errors);
     });
 
     if (res) {
@@ -27,14 +27,12 @@ const Register = () => {
     }
   };
   return (
-    <div className='container'>
+    <div>
       <ToastContainer />
       {isAuth() ? <Redirect to='/' /> : null}
       <RegisterForm submit={data => handleSubmit(data)} />
-      <p>Or sign with email or social login</p>
-      <button className='signin-btn' onClick={() => toast.error('test')}>
-        Sign In
-      </button>
+      <p>Or login with email</p>
+      <button onClick={() => history.push('/login')}>Sign In</button>
     </div>
   );
 };
