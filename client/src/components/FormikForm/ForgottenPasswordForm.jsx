@@ -3,11 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { loginFormSchema } from 'utils/validationSchema';
 
 const initialValues = {
-  name: '',
   email: '',
 };
 
-const LoginForm = ({ submit }) => {
+const ForgottenPasswordForm = ({ submit, isLoading }) => {
   return (
     <Formik
       initialValues={initialValues}
@@ -25,13 +24,9 @@ const LoginForm = ({ submit }) => {
                 <Field type='email' name='email' id='email' />
                 <ErrorMessage name='email' component='span' />
               </div>
-
-              <div className='form-row'>
-                <label htmlFor='password'>Password</label>
-                <Field type='password' name='password' id='password' />
-                <ErrorMessage name='password' component='span' />
-              </div>
-              <button type='submit'>login</button>
+              <button disabled={isLoading} type='submit'>
+                {isLoading ? 'Submitting...' : 'Submit'}
+              </button>
             </Form>
           </div>
         );
@@ -40,4 +35,4 @@ const LoginForm = ({ submit }) => {
   );
 };
 
-export default LoginForm;
+export default ForgottenPasswordForm;

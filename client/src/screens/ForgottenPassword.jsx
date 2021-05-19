@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { isAuth } from 'helpers/auth';
-import { Redirect } from 'react-router-dom';
-import RegisterForm from 'components/FormikForm/RegisterForm';
+import ForgottenPasswordForm from 'components/FormikForm/ForgottenPasswordForm';
 import request from 'utils/request';
 
-const Register = ({ history }) => {
+const ForgottenPassword = ({ history }) => {
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async formData => {
+    console.log(formData);
     setLoading(true);
     const res = await request({
-      url: `/register`,
-      method: 'POST',
+      url: `/password/forget`,
+      method: 'PUT',
       data: {
-        name: formData.name,
         email: formData.email,
-        password: formData.password,
       },
     }).catch(err => {
       toast.error(err.data.errors);
@@ -28,14 +25,17 @@ const Register = ({ history }) => {
       setLoading(false);
     }
   };
+
   return (
     <div>
-      {isAuth() ? <Redirect to='/' /> : null}
-      <RegisterForm isLoading={isLoading} submit={data => handleSubmit(data)} />
+      <ForgottenPasswordForm
+        isLoading={isLoading}
+        submit={data => handleSubmit(data)}
+      />
       <p>Or login with email</p>
       <button onClick={() => history.push('/login')}>Sign In</button>
     </div>
   );
 };
 
-export default Register;
+export default ForgottenPassword;

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import { authenticate, isAuth } from 'helpers/auth';
+import { toast } from 'react-toastify';
+import { isAuth } from 'helpers/auth';
 import { Redirect } from 'react-router-dom';
 import request from 'utils/request';
 import jwt from 'jsonwebtoken';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Activation = ({ match, history }) => {
   const [formData, setFormData] = useState({
@@ -49,7 +48,6 @@ const Activation = ({ match, history }) => {
 
   return (
     <div>
-      <ToastContainer />
       {isAuth() ? <Redirect to='/' /> : null}
       <div>
         <h1>Welcome {name} to React-app</h1>

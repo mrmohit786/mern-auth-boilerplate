@@ -1,15 +1,14 @@
-import React from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { authenticate, isAuth } from 'helpers/auth';
-import LoginForm from 'components/LoginForm';
+import LoginForm from 'components/FormikForm/LoginForm';
 import { Redirect } from 'react-router-dom';
 import request from 'utils/request';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Login = ({ history }) => {
+  const [isLoading, setLoading] = useState(false);
   const handleSubmit = async formData => {
-    console.log(formData);
-
+    setLoading(true);
     const res = await request({
       url: `/login`,
       method: 'POST',
@@ -19,10 +18,12 @@ const Login = ({ history }) => {
       },
     }).catch(err => {
       toast.error(err.data.error);
+      setLoading(false);
     });
 
     if (res) {
       toast.success(`Welcome back, ${res.data.user.name}`);
+      setLoading(false);
       authenticate(res, () => {
         isAuth() && isAuth().role === 'admin'
           ? history.push('/admin')
@@ -32,11 +33,10 @@ const Login = ({ history }) => {
   };
   return (
     <div>
-      <ToastContainer />
       {isAuth() ? <Redirect to='/' /> : null}
-      <LoginForm submit={data => handleSubmit(data)} />
+      <LoginForm isLoading={isLoading} submit={data => handleSubmit(data)} />
       <button onClick={() => history.push('/users/password/forget')}>
-      Forgotten password?
+        Forgotten password?
       </button>
       <p>New here!, please register first.</p>
       <button onClick={() => history.push('/register')}>Register</button>

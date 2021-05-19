@@ -158,3 +158,5 @@ exports.loginController = async (req, res) => {
     });
   }
 };
+
+exports.forgetPasswordController = async (req, res) => {};

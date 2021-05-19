@@ -9,7 +9,7 @@ const initialValues = {
   confirmPassword: '',
 };
 
-const RegisterForm = ({ submit }) => {
+const RegisterForm = ({ submit, isLoading }) => {
   return (
     <Formik
       initialValues={initialValues}
@@ -47,7 +47,7 @@ const RegisterForm = ({ submit }) => {
                 />
                 <ErrorMessage name='confirmPassword' component='span' />
               </div>
-              <button type='submit'>Register</button>
+              <button type='submit' disabled={isLoading}>{isLoading? 'Registering...' : 'Register'}</button>
             </Form>
           </div>
         );

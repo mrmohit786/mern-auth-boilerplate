@@ -1,16 +1,16 @@
 {
   "name": "mern-auth-boilerplate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Auth APIs for login and registration",
   "main": "server.js",
   "engines": {
     "node": "12.x"
   },
   "scripts": {
     "start": "node server",
-    "server": "nodemon server --ignore 'client/'",
-    "client": "npm start --prefix client",
-    "app": "concurrently \"npm run server\" \"npm run client\""
+    "devServer": "nodemon server --ignore 'client/'",
+    "devClient": "npm start --prefix client",
+    "devApp": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Mohit Patel",
   "license": "ISC",

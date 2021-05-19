@@ -29,5 +29,5 @@ app.use((req, res, next) => {
   });
 });
 
-// listen server in PORT
+// listen server in PORT: 5000
 app.listen(process.env.PORT, () => console.log(`server listening on port ${process.env.PORT}`));
