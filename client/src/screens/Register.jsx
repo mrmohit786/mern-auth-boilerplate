@@ -19,7 +19,7 @@ const Register = ({ history }) => {
         password: formData.password,
       },
     }).catch(err => {
-      toast.error(err.data.errors);
+      toast.error(err.data.error);
       setLoading(false);
     });
 
@@ -33,7 +33,7 @@ const Register = ({ history }) => {
       {isAuth() ? <Redirect to='/' /> : null}
       <RegisterForm isLoading={isLoading} submit={data => handleSubmit(data)} />
       <p>Or login with email</p>
-      <button onClick={() => history.push('/login')}>Sign In</button>
+      <button onClick={() => history.push('/login')}>Login</button>
     </div>
   );
 };

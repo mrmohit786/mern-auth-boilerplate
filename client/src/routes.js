@@ -5,9 +5,10 @@ import Register from 'screens/Register';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Activation from 'screens/Activation';
 import Login from 'screens/Login';
-import ForgottenPassword from 'screens/ForgottenPassword';
+import ForgotPassword from 'screens/ForgotPassword';
 import PageNotFound from 'screens/PageNotFound';
 import { ToastContainer } from 'react-toastify';
+import ResetPassword from 'screens/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css';
 
 const routes = () => {
@@ -18,27 +19,20 @@ const routes = () => {
         <ErrorBoundary>
           <Switch>
             <Route path='/' exact render={props => <Home {...props} />} />
-            <Route
-              path='/register'
-              exact
-              render={props => <Register {...props} />}
-            />
-            <Route path='/login' exact render={props => <Login {...props} />} />
-            <Route
-              path='/users/activate/:token'
-              exact
-              render={props => <Activation {...props} />}
-            />
+            <Route path='/register' exact component={Register} />
+            <Route path='/login' exact component={Login} />
+            <Route path='/users/activate/:token' exact component={Activation} />
             <Route
               path='/users/password/forget'
               exact
-              render={props => <ForgottenPassword {...props} />}
+              component={ForgotPassword}
             />
             <Route
-              path='*'
+              path='/users/password/reset/:token'
               exact
-              render={props => <PageNotFound {...props} />}
+              component={ResetPassword}
             />
+            <Route path='*' exact component={PageNotFound} />
           </Switch>
         </ErrorBoundary>
       </BrowserRouter>

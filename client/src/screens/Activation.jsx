@@ -24,7 +24,6 @@ const Activation = ({ match, history }) => {
       });
     }
 
-    console.log({ name, token });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params]);
 

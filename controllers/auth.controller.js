@@ -2,6 +2,7 @@ const User = require('../models/auth.model');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { mailService } = require('../utils/services');
+const _ = require('lodash');
 
 // custom error handler
 const { errorHandler } = require('../helpers/dbErrorHandling');
@@ -53,7 +54,6 @@ exports.registerController = async (req, res) => {
     // send activation mail
     const request = await mailService(mailOptions);
     if (request) {
-      console.log(request);
       return res.status(200).json({
         message: `Email has been sent to ${email}`,
       });
@@ -63,7 +63,6 @@ exports.registerController = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(400).json({
       error: errorHandler(error),
     });
@@ -159,4 +158,125 @@ exports.loginController = async (req, res) => {
   }
 };
 
-exports.forgetPasswordController = async (req, res) => {};
+exports.forgetPasswordController = async (req, res) => {
+  const { email } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = errors.array().map(error => error.msg)[0];
+    return res.status(422).json({ error });
+  }
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        error: 'email does not exists',
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      process.env.JWT_RESET_PASSWORD,
+      { expiresIn: '10m' }
+    );
+
+    //email data sending
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Reset password link',
+      html: `
+        <h1>Please click on link to reset your ${'react-app'} password.</h1>
+        <p>${process.env.CLIENT_URL}/users/password/reset/${token}</p>
+        <hr/>
+        <p>This email contain sensitive information</p>
+        <p>${process.env.CLIENT_URL}</p>
+        `,
+    };
+
+    user = await user.updateOne({
+      resetPasswordLink: token,
+    });
+
+    if (user) {
+      const request = await mailService(mailOptions);
+      if (request) {
+        return res.status(200).json({
+          message: `Email has been sent to ${email}`,
+        });
+      } else {
+        return res.status(500).json({
+          error: `Something went wrong, Please try again`,
+        });
+      }
+    } else {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+};
+
+exports.resetPasswordController = (req, res) => {
+  const { password, resetPasswordLink } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = errors.array().map(error => error.msg)[0];
+    return res.status(422).json({
+      error: error,
+    });
+  }
+
+  if (resetPasswordLink) {
+    jwt.verify(
+      resetPasswordLink,
+      process.env.JWT_RESET_PASSWORD,
+      (err, decoded) => {
+        if (err) {
+          return res.status(400).json({
+            error: 'Expired Link, try again',
+          });
+        }
+
+        User.findOne({ resetPasswordLink }, (err, user) => {
+          if (err || !user) {
+            return res.status(400).json({
+              error: 'Something went wrong, Please Try again later.',
+            });
+          }
+
+          const updatedPassword = {
+            password,
+            resetPasswordLink: '',
+          };
+
+          user = _.extend(user, updatedPassword);
+
+          user.save((err, result) => {
+            if (err) {
+              return res.status(400).json({
+                error: 'Error in resetting user password',
+              });
+            }
+            res.status(200).json({
+              message: 'Password is updated',
+            });
+          });
+        });
+      }
+    );
+  } else {
+    res.status(400).json({
+      error: 'Reset password link is not found',
+    });
+  }
+};

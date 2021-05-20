@@ -1,16 +1,16 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { loginFormSchema } from 'utils/validationSchema';
+import { ForgotPasswordFormSchema } from 'utils/validationSchema';
 
 const initialValues = {
   email: '',
 };
 
-const ForgottenPasswordForm = ({ submit, isLoading }) => {
+const ForgotPasswordForm = ({ submit, isLoading }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={loginFormSchema}
+      validationSchema={ForgotPasswordFormSchema}
       onSubmit={submit}
     >
       {formik => {
@@ -18,7 +18,7 @@ const ForgottenPasswordForm = ({ submit, isLoading }) => {
         return (
           <div>
             <Form>
-              <h1>LOGIN</h1>
+              <h1>Forgot Password</h1>
               <div>
                 <label htmlFor='email'>Email</label>
                 <Field type='email' name='email' id='email' />
@@ -35,4 +35,4 @@ const ForgottenPasswordForm = ({ submit, isLoading }) => {
   );
 };
 
-export default ForgottenPasswordForm;
+export default ForgotPasswordForm;

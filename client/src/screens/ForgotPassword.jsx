@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import ForgottenPasswordForm from 'components/FormikForm/ForgottenPasswordForm';
+import ForgotPasswordForm from 'components/FormikForm/ForgotPasswordForm';
 import request from 'utils/request';
 
 const ForgottenPassword = ({ history }) => {
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async formData => {
-    console.log(formData);
     setLoading(true);
     const res = await request({
       url: `/password/forget`,
@@ -16,7 +15,7 @@ const ForgottenPassword = ({ history }) => {
         email: formData.email,
       },
     }).catch(err => {
-      toast.error(err.data.errors);
+      toast.error(err.data.error);
       setLoading(false);
     });
 
@@ -28,12 +27,12 @@ const ForgottenPassword = ({ history }) => {
 
   return (
     <div>
-      <ForgottenPasswordForm
+      <ForgotPasswordForm
         isLoading={isLoading}
         submit={data => handleSubmit(data)}
       />
       <p>Or login with email</p>
-      <button onClick={() => history.push('/login')}>Sign In</button>
+      <button onClick={() => history.push('/login')}>Login</button>
     </div>
   );
 };

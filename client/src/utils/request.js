@@ -9,9 +9,6 @@ const client = axios.create({
 client.defaults.headers.get['Accept'] = 'application/json';
 client.defaults.headers.post['Accept'] = 'application/json';
 
-// timeout : 2.5sec
-client.defaults.timeout = 2500;
-
 const request = function (options) {
   const onSuccess = (response) => {
     return response.data;
