@@ -7,7 +7,6 @@ const ResetPassword = ({ history, match }) => {
   const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState({
-    name: '',
     token: '',
   });
 

@@ -3,8 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { loginFormSchema } from 'utils/validationSchema';
 
 const initialValues = {
-  name: '',
   email: '',
+  password: '',
 };
 
 const LoginForm = ({ submit, isLoading }) => {
@@ -25,7 +25,6 @@ const LoginForm = ({ submit, isLoading }) => {
                 <Field type='email' name='email' id='email' />
                 <ErrorMessage name='email' component='span' />
               </div>
-
               <div>
                 <label htmlFor='password'>Password</label>
                 <Field type='password' name='password' id='password' />
