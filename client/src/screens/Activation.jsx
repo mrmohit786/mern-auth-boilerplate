@@ -36,7 +36,7 @@ const Activation = ({ match, history }) => {
       method: 'POST',
       data: { token },
     }).catch(err => {
-      toast.error(err.data.error);
+      toast.error(err?.data?.error || err);
     });
 
     if (res) {

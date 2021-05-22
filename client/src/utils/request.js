@@ -14,6 +14,7 @@ const request = function (options) {
     return response.data;
   };
 
+  // give {Network error} when api server is not connected 
   const onError = (error) => {
     return Promise.reject(error.response || error.message);
   };

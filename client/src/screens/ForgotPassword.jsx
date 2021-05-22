@@ -15,7 +15,7 @@ const ForgottenPassword = ({ history }) => {
         email: formData.email,
       },
     }).catch(err => {
-      toast.error(err.data.error);
+      toast.error(err?.data?.error || err);
       setLoading(false);
     });
 

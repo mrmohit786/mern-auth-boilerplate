@@ -13,7 +13,6 @@ const ResetPassword = ({ history, match }) => {
   useEffect(() => {
     let token = match.params.token;
     if (token) {
-     
       setData({
         ...data,
         token,
@@ -22,7 +21,6 @@ const ResetPassword = ({ history, match }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params]);
 
-
   const handleSubmit = async formData => {
     setLoading(true);
     const res = await request({
@@ -30,10 +28,10 @@ const ResetPassword = ({ history, match }) => {
       method: 'PUT',
       data: {
         password: formData.password,
-        resetPasswordLink: data.token
+        resetPasswordLink: data.token,
       },
     }).catch(err => {
-      toast.error(err.data.error);
+      toast.error(err?.data?.error || err);
       setLoading(false);
     });
 
