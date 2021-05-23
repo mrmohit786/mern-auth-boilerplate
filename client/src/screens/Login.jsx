@@ -22,7 +22,6 @@ const Login = ({ history }) => {
     });
 
     if (res) {
-      console.log({ res });
       authenticateLogin(res);
     }
   };

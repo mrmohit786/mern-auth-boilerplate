@@ -35,7 +35,6 @@ exports.mailService = async mailOptions => {
     // send transport promise
     return await transport.sendMail(mailOptions);
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
