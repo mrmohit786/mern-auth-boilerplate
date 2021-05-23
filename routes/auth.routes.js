@@ -14,7 +14,8 @@ const {
   activationController,
   loginController,
   forgetPasswordController,
-  resetPasswordController
+  resetPasswordController,
+  googleLoginController
 } = 
 require('../controllers/auth.controller.js');
 
@@ -22,6 +23,7 @@ require('../controllers/auth.controller.js');
 router.post('/register', registerValidator, registerController);
 router.post('/login', loginValidator, loginController);
 router.post('/activation', activationController);
+router.post('/googleLogin', googleLoginController);
 router.put(
   '/password/reset',
   resetPasswordValidator,

@@ -3,9 +3,9 @@ const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { mailService } = require('../utils/services');
 const _ = require('lodash');
-
-// custom error handler
+const { OAuth2Client } = require('google-auth-library');
 const { errorHandler } = require('../helpers/dbErrorHandling');
+const { v4: uuidv4 } = require('uuid');
 
 exports.registerController = async (req, res) => {
   const { name, email, password } = req.body;
@@ -85,6 +85,7 @@ exports.activationController = (req, res) => {
           name,
           email,
           password,
+          authorizationId: uuidv4(),
         });
 
         user.save((err, user) => {
@@ -279,4 +280,69 @@ exports.resetPasswordController = (req, res) => {
       error: 'Reset password link is not found',
     });
   }
+};
+
+exports.googleLoginController = (req, res) => {
+  const client = new OAuth2Client(process.env.CLIENT_ID);
+  const { idToken } = req.body;
+  client
+    .verifyIdToken({ idToken, audience: process.env.CLIENT_ID })
+    .then(response => {
+      const { email_verified, name, email, picture, sub } = response.payload;
+      if (email_verified) {
+        User.findOne({ email }).exec((err, user) => {
+          if (user) {
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+              expiresIn: '7d',
+            });
+            const { _id, email, name, role } = user;
+            return res.status(200).json({
+              data: {
+                token,
+                user: { id: _id, email, name, role },
+              },
+            });
+          } else {
+            let password = email + process.env.JWT_SECRET;
+            user = new User({
+              name,
+              email,
+              password,
+              imageUrl: picture,
+              authorizationId: sub,
+              authorizationType: 'GOOGLE',
+            });
+            user.save((err, data) => {
+              if (err) {
+                return res.status(400).json({
+                  error: 'User signup failed with google',
+                });
+              }
+              const token = jwt.sign(
+                { _id: data._id },
+                process.env.JWT_SECRET,
+                { expiresIn: '7d' }
+              );
+              const { _id, email, name, role } = data;
+              return res.status(200).json({
+                data: {
+                  token,
+                  user: { id: _id, email, name, role },
+                },
+              });
+            });
+          }
+        });
+      } else {
+        return res.status(400).json({
+          error: 'Google login failed. Try again',
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).json({
+        error: 'Internal server error',
+      });
+    });
 };

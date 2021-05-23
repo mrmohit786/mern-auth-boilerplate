@@ -16,6 +16,18 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    imageUrl: {
+      type: String,
+    },
+    authorizationId: {
+      type: String,
+    },
+    authorizationType: {
+      type: String,
+      enum: ['GOOGLE', 'FACEBOOK', 'REGISTRATION'],
+      default: 'REGISTRATION',
+      required: true,
+    },
     hashed_password: {
       type: String,
       required: true,

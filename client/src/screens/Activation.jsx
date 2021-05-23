@@ -42,6 +42,7 @@ const Activation = ({ match, history }) => {
     if (res) {
       setFormData({ ...formData, show: false });
       toast.success(res.message);
+      history.push('/login');
     }
   };
 
@@ -54,7 +55,7 @@ const Activation = ({ match, history }) => {
           <button type='submit'>Activate your account</button>
         </form>
         <p>Or sign up again</p>
-        <button onClick={() => history.push('/')}>Sign Up</button>
+        <button onClick={() => history.push('/register')}>Sign Up</button>
       </div>
     </div>
   );

@@ -10,12 +10,11 @@ client.defaults.headers.get['Accept'] = 'application/json';
 client.defaults.headers.post['Accept'] = 'application/json';
 
 const request = function (options) {
-  const onSuccess = (response) => {
+  const onSuccess = response => {
     return response.data;
   };
 
-  // give {Network error} when api server is not connected 
-  const onError = (error) => {
+  const onError = error => {
     return Promise.reject(error.response || error.message);
   };
 

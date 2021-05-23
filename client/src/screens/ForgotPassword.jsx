@@ -31,8 +31,6 @@ const ForgottenPassword = ({ history }) => {
         isLoading={isLoading}
         submit={data => handleSubmit(data)}
       />
-      <p>Or login with email</p>
-      <button onClick={() => history.push('/login')}>Login</button>
     </div>
   );
 };

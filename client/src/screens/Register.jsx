@@ -7,6 +7,7 @@ import request from 'utils/request';
 
 const Register = ({ history }) => {
   const [isLoading, setLoading] = useState(false);
+  const [isSent, setSent] = useState(false);
 
   const handleSubmit = async formData => {
     setLoading(true);
@@ -25,15 +26,25 @@ const Register = ({ history }) => {
 
     if (res) {
       toast.success(res.message);
+      setSent(true);
       setLoading(false);
     }
   };
   return (
     <div>
       {isAuth() ? <Redirect to='/' /> : null}
-      <RegisterForm isLoading={isLoading} submit={data => handleSubmit(data)} />
-      <p>Or login with email</p>
-      <button onClick={() => history.push('/login')}>Login</button>
+      {!isSent ? (
+        <RegisterForm
+          isLoading={isLoading}
+          submit={data => handleSubmit(data)}
+        />
+      ) : (
+        <p>Please check your email for account activation.</p>
+      )}
+      <p>
+        Already register,{' '}
+        <strong onClick={() => history.push('/login')}>Login Here!</strong>
+      </p>
     </div>
   );
 };

@@ -37,6 +37,7 @@ const ResetPassword = ({ history, match }) => {
 
     if (res) {
       toast.success(res.message);
+      history.push('/login');
       setLoading(false);
     }
   };
@@ -47,8 +48,6 @@ const ResetPassword = ({ history, match }) => {
         isLoading={isLoading}
         submit={data => handleSubmit(data)}
       />
-      <p>Or login with email</p>
-      <button onClick={() => history.push('/login')}>Sign In</button>
     </div>
   );
 };
