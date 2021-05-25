@@ -5,7 +5,7 @@ import LoginForm from 'components/FormikForm/LoginForm';
 import { Redirect } from 'react-router-dom';
 import request from 'utils/request';
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'; // for use custom styling
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'; // for use custom styling
 
 const Login = ({ history }) => {
   const [isLoading, setLoading] = useState(false);
@@ -123,7 +123,7 @@ const Login = ({ history }) => {
           </button>
         )}
       />
-      <FacebookLogin
+      {/* <FacebookLogin
         appId={process.env.REACT_APP_FACEBOOK_CLIENT}
         callback={responseFacebook}
         render={renderProps => (
@@ -131,7 +131,7 @@ const Login = ({ history }) => {
             Sign In with Facebook
           </button>
         )}
-      />
+      /> */}
     </div>
   );
 };

@@ -347,9 +347,10 @@ exports.googleController = (req, res) => {
     });
 };
 
+// not working
 exports.facebookController = (req, res) => {
   const { userID, accessToken } = req.body;
-  const url = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+  const url = `https://graph.facebook.com/v10.0/${userID}?access_token=${accessToken}`;
 
   return fetch(url, {
     method: 'GET',

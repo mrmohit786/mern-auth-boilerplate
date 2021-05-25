@@ -32,6 +32,7 @@ const routes = () => {
               exact
               component={ResetPassword}
             />
+            
             <Route path='*' exact component={PageNotFound} />
           </Switch>
         </ErrorBoundary>
