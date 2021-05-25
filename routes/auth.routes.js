@@ -15,7 +15,8 @@ const {
   loginController,
   forgetPasswordController,
   resetPasswordController,
-  googleLoginController
+  googleController,
+  facebookController
 } = 
 require('../controllers/auth.controller.js');
 
@@ -23,7 +24,8 @@ require('../controllers/auth.controller.js');
 router.post('/register', registerValidator, registerController);
 router.post('/login', loginValidator, loginController);
 router.post('/activation', activationController);
-router.post('/googleLogin', googleLoginController);
+router.post('/googleLogin', googleController);
+router.post('/facebookLogin', facebookController);
 router.put(
   '/password/reset',
   resetPasswordValidator,

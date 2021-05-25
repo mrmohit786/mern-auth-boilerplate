@@ -5,9 +5,28 @@ import LoginForm from 'components/FormikForm/LoginForm';
 import { Redirect } from 'react-router-dom';
 import request from 'utils/request';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'; // for use custom styling
 
 const Login = ({ history }) => {
   const [isLoading, setLoading] = useState(false);
+
+  const handleFacebookLogin = async (userId, accessToken) => {
+    const res = await request({
+      url: `/facebookLogin`,
+      method: 'POST',
+      data: {
+        accessToken,
+        userId,
+      },
+    }).catch(err => {
+      toast.error(err?.data?.error || err);
+      setLoading(false);
+    });
+
+    if (res) {
+      authenticateLogin(res);
+    }
+  };
 
   const handleGoogleLogin = async idToken => {
     const res = await request({
@@ -38,8 +57,21 @@ const Login = ({ history }) => {
     if (!res.error) {
       handleGoogleLogin(res.tokenId, res.googleId);
     } else {
-      toast.error('Having trouble in Google sign in, Please register from website.')
-      }
+      toast.error(
+        'Having trouble in Google sign in, Please register from website.'
+      );
+    }
+  };
+
+  const responseFacebook = res => {
+    console.log(res);
+    if (res.accessToken) {
+      handleFacebookLogin(res.userID, res.accessToken);
+    } else {
+      toast.error(
+        'Having trouble in Facebook sign in, Please register from website.'
+      );
+    }
   };
 
   const handleSubmit = async formData => {
@@ -75,7 +107,9 @@ const Login = ({ history }) => {
       </button>
       <p>
         New to application,{' '}
-        <strong onClick={() => history.push('/register')}>Register Here!</strong>
+        <strong onClick={() => history.push('/register')}>
+          Register Here!
+        </strong>
       </p>
       <p>Or</p>
       <GoogleLogin
@@ -86,6 +120,15 @@ const Login = ({ history }) => {
         render={renderProps => (
           <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
             Sign In with Google
+          </button>
+        )}
+      />
+      <FacebookLogin
+        appId={process.env.REACT_APP_FACEBOOK_CLIENT}
+        callback={responseFacebook}
+        render={renderProps => (
+          <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+            Sign In with Facebook
           </button>
         )}
       />
