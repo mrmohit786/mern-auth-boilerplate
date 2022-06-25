@@ -27,7 +27,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^5.12.9",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "nodemailer": "^6.6.0",
     "uuid": "^8.3.2"
   },
